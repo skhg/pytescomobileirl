@@ -1,0 +1,166 @@
+{
+  "mainBalance" : 14.420000076293945,
+  "bonusBalance" : 0.0,
+  "lastBillAmount" : 0.0,
+  "openBillAmount" : 0.0,
+  "webTextBalance" : {
+    "nationalSms" : 200,
+    "internationalSms" : 50,
+    "nationalSmsAllowance" : 200,
+    "internationalSmsAllowance" : 50
+  },
+  "addonBalance" : [ {
+    "balance" : 10000.0,
+    "expiryDate" : "15-Oct-2017 00:00",
+    "serviceBundle" : {
+      "name" : "Awarded Voice Balance",
+      "paymentProfile" : null,
+      "serviceCode" : "AB2",
+      "recurring" : false,
+      "allowance" : 10000.0,
+      "type" : "voice",
+      "unit" : "Min",
+      "charge" : 0.0,
+      "status" : "ACTIVE",
+      "serviceParameters" : { }
+    },
+    "optin" : true,
+    "visible" : null
+  }, {
+    "balance" : 5000.0,
+    "expiryDate" : null,
+    "serviceBundle" : {
+      "name" : "Unlimited Text",
+      "paymentProfile" : null,
+      "serviceCode" : "PG2",
+      "recurring" : true,
+      "allowance" : 5000.0,
+      "type" : "text",
+      "unit" : "Msg",
+      "charge" : 10.0,
+      "status" : "INACTIVE",
+      "serviceParameters" : { }
+    },
+    "optin" : false,
+    "visible" : null
+  }, {
+    "balance" : 1048576.0,
+    "expiryDate" : null,
+    "serviceBundle" : {
+      "name" : "1GB Recurring Data Add-On",
+      "paymentProfile" : null,
+      "serviceCode" : "PG1",
+      "recurring" : true,
+      "allowance" : 1048576.0,
+      "type" : "data",
+      "unit" : "kB",
+      "charge" : 5.0,
+      "status" : "INACTIVE",
+      "serviceParameters" : { }
+    },
+    "optin" : false,
+    "visible" : null
+  }, {
+    "balance" : 5242880.0,
+    "expiryDate" : null,
+    "serviceBundle" : {
+      "name" : "5GB Recurring Data Add-On",
+      "paymentProfile" : null,
+      "serviceCode" : "PG4",
+      "recurring" : true,
+      "allowance" : 5242880.0,
+      "type" : "data",
+      "unit" : "kB",
+      "charge" : 10.0,
+      "status" : "INACTIVE",
+      "serviceParameters" : { }
+    },
+    "optin" : false,
+    "visible" : null
+  }, {
+    "balance" : 51200.0,
+    "expiryDate" : null,
+    "serviceBundle" : {
+      "name" : "Once-Off 50MB Data Bundle",
+      "paymentProfile" : null,
+      "serviceCode" : "DA9",
+      "recurring" : false,
+      "allowance" : 51200.0,
+      "type" : "data",
+      "unit" : "kB",
+      "charge" : 0.7900000214576721,
+      "status" : "INACTIVE",
+      "serviceParameters" : { }
+    },
+    "optin" : false,
+    "visible" : null
+  }, {
+    "balance" : 358400.0,
+    "expiryDate" : null,
+    "serviceBundle" : {
+      "name" : "Once-Off 350MB Data Bundle",
+      "paymentProfile" : null,
+      "serviceCode" : "DA10",
+      "recurring" : false,
+      "allowance" : 358400.0,
+      "type" : "data",
+      "unit" : "kB",
+      "charge" : 2.990000009536743,
+      "status" : "INACTIVE",
+      "serviceParameters" : { }
+    },
+    "optin" : false,
+    "visible" : null
+  }, {
+    "balance" : 1048452.0,
+    "expiryDate" : "15-Oct-2017 00:04",
+    "serviceBundle" : {
+      "name" : "Once-Off 1GB Data Bundle",
+      "paymentProfile" : null,
+      "serviceCode" : "DA11",
+      "recurring" : false,
+      "allowance" : 1048576.0,
+      "type" : "data",
+      "unit" : "kB",
+      "charge" : 5.0,
+      "status" : "INACTIVE",
+      "serviceParameters" : { }
+    },
+    "optin" : false,
+    "visible" : null
+  }, {
+    "balance" : 5242880.0,
+    "expiryDate" : null,
+    "serviceBundle" : {
+      "name" : "Once-Off 5GB Data Bundle",
+      "paymentProfile" : null,
+      "serviceCode" : "DA15",
+      "recurring" : false,
+      "allowance" : 5242880.0,
+      "type" : "data",
+      "unit" : "kB",
+      "charge" : 10.0,
+      "status" : "INACTIVE",
+      "serviceParameters" : { }
+    },
+    "optin" : false,
+    "visible" : null
+  }, {
+    "balance" : 1023.87890625,
+    "expiryDate" : "15-Oct-2017 00:00",
+    "serviceBundle" : {
+      "name" : "Customer Topup Data Balance",
+      "paymentProfile" : null,
+      "serviceCode" : "AB3",
+      "recurring" : false,
+      "allowance" : -1.0,
+      "type" : "data",
+      "unit" : "MByte",
+      "charge" : 0.0,
+      "status" : "ACTIVE",
+      "serviceParameters" : { }
+    },
+    "optin" : true,
+    "visible" : null
+  } ]
+}
