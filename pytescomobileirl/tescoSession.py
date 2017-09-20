@@ -1,4 +1,6 @@
 import requests
+from . import Balances
+from . import Usage
 
 class TescoSession:
 
@@ -11,26 +13,26 @@ class TescoSession:
 
         self.__session = requests.session()
 
-    def login(self, phone_num password):
+    def login(self, phone_num, password):
         login_details = {'j_username': phone_num, 'j_password': password}
 
         try:
-            login_result = self.__session.post(TescoSession.__login_url, data=login_details)
+            login_result = self.__session.post(self.__login_url, data=login_details)
         except:
             return False
 
         return login_result.ok
 
     def logout(self):
-        self.__session.get(TescoSession.__logout_url)
+        self.__session.get(self.__logout_url)
         self.__session.close()
 
     def get_balances(self):
-        json_balances = self.__session.get(TescoSession.__balance_url).content
+        json_balances = self.__session.get(self.__balance_url).content
 
         return Balances(json_balances)
 
     def get_usage(self, limit=20):
-        json_usage_record = self.__session.get(TescoSession.__usage_url+str(limit)).content
+        json_usage_record = self.__session.get(self.__usage_url+str(limit)).content
 
-        return UsageRecords(json_usage_record)
+        return Usage(json_usage_record)
