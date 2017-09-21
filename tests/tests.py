@@ -35,5 +35,24 @@ class TestBalances(unittest.TestCase):
 
 			self.assertEqual(len(list(balances.active_balances())), 2)
 
+	def test_data_gets_data_balances(self):
+		with(open(sample_data_dir+"balances_lots_enabled.json")) as f:
+			balances = Balances(f.read())
+
+			self.assertEqual(len(list(balances.data())), 6)
+
+	def test_data_gets_text_balances(self):
+		with(open(sample_data_dir+"balances_lots_enabled.json")) as f:
+			balances = Balances(f.read())
+
+			self.assertEqual(len(list(balances.text())), 1)
+
+	def test_data_gets_voice_balances(self):
+		with(open(sample_data_dir+"balances_lots_enabled.json")) as f:
+			balances = Balances(f.read())
+
+			self.assertEqual(len(list(balances.voice())), 1)
+
+    
 if __name__ == '__main__':
 	unittest.main()

@@ -1,7 +1,12 @@
 import json
 from . import ServiceBalance
+from .serviceBalance import DataBalance
+from .serviceBalance import VoiceBalance
+from .serviceBalance import TextBalance
+from .serviceBalance import GenericBalance
 
 class Balances:
+    __mapping = {"data": DataBalance, "voice": VoiceBalance, "text": TextBalance }
 
     def __init__(self, json_blob):
         self.services = []
@@ -13,7 +18,17 @@ class Balances:
         self.credit_remaining = round(balance_data["mainBalance"], 2)
 
         for addon in balance_data["addonBalance"]:
-            self.services.append(ServiceBalance(addon))
+            newService = self.__create_svc(addon)
+            self.services.append(newService)
+
+    def __create_svc(self, balance_data):
+        adv_data = balance_data["serviceBundle"]
+        serviceType = adv_data["type"]
+
+        if serviceType in Balances.__mapping:
+            return Balances.__mapping[serviceType](balance_data, adv_data)
+        else:
+            return GenericBalance(balance_data, adv_data)
 
     def active_balances(self, svc_type = None):
         for bal in self.services:
@@ -21,18 +36,17 @@ class Balances:
                 yield bal
 
     def data(self):
-        return self.filter_balances("data")
+        return self.active_balances("data")
 
     def text(self):
-        return self.filter_balances("text")
+        return self.active_balances("text")
 
     def voice(self):
-        return self.filter_balances("voice")
+        return self.active_balances("voice")
 
     def data_remaining(self):
         data_tot = 0
         for bal in self.data():
             data_tot += bal.remaining_balance()
         return int(round(data_tot))
-
 
