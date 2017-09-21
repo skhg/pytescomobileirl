@@ -99,5 +99,47 @@ class TestBalances(unittest.TestCase):
 
 		self.assertTrue(isinstance(balances.services[0],GenericBalance))
 
+	def test_remaining_total_for_missing_type_returns_0(self):
+		with(open(sample_data_dir+"balances_lots_enabled.json")) as f:
+			balances = Balances(f.read())
+
+			self.assertEqual(balances.remaining_total("nonexistent"),0)
+
+	def test_remaining_total_for_data_matches_expected(self):
+		with(open(sample_data_dir+"balances_lots_enabled.json")) as f:
+			balances = Balances(f.read())
+
+			self.assertEqual(balances.remaining_total("data"),8591.7578125)
+
+	def test_remaining_total_for_958Mb_sample_matches_expected(self):
+		with(open(sample_data_dir+"mobile_data_958_left.json")) as f:
+			balances = Balances(f.read())
+
+			self.assertEqual(balances.remaining_total("data"),958.076171875)
+
+class TestServiceBalance(unittest.TestCase):
+
+	def test_init_convertsKbToMByte(self):
+		with(open(sample_data_dir+"balances_lots_enabled.json")) as f:
+			jsonFromFile = json.loads(f.read())
+
+			simple_data = jsonFromFile["addonBalance"][2]
+			adv_data = simple_data["serviceBundle"]
+
+			aDataBalance = DataBalance(simple_data, adv_data)
+
+			self.assertEqual(aDataBalance.remaining_qty, 1024.0)
+
+	def test_init_Mbyte_remains_as_Mbyte(self):
+		with(open(sample_data_dir+"balances_lots_enabled.json")) as f:
+			jsonFromFile = json.loads(f.read())
+
+			simple_data = jsonFromFile["addonBalance"][8]
+			adv_data = simple_data["serviceBundle"]
+
+			aDataBalance = DataBalance(simple_data, adv_data)
+
+			self.assertEqual(aDataBalance.remaining_qty, 1023.87890625)
+
 if __name__ == '__main__':
 	unittest.main()
