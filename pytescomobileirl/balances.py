@@ -45,7 +45,7 @@ class Balances:
         return self.active_balances("voice")
 
     def remaining_total(self, svc_type):
-        total = 0
+        total = 0.0
         for bal in self.active_balances(svc_type):
             total += bal.remaining_qty
         return total
