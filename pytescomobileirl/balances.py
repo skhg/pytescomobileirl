@@ -15,9 +15,9 @@ class Balances:
         for addon in balance_data["addonBalance"]:
             self.services.append(ServiceBalance(addon))
 
-    def filter_balances(self, type):
+    def active_balances(self, svc_type = None):
         for bal in self.services:
-            if bal.type() == type and bal.active():
+            if bal.is_active and (bal.balance_type == svc_type or svc_type is None) :
                 yield bal
 
     def data(self):
