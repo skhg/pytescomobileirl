@@ -212,35 +212,35 @@ class TestServiceBalance(unittest.TestCase):
 class TestUsage(unittest.TestCase):
 
 	def test_usage_init_loadsJson(self):
-		with(open(sample_data_dir+"usage_full_original.json")) as f:
+		with(open(sample_data_dir+"usage_full_anonymised.json")) as f:
 			usages = Usage(f.read())
 
 	def test_usage_size_has_all_records(self):
-		with(open(sample_data_dir+"usage_full_original.json")) as f:
+		with(open(sample_data_dir+"usage_full_anonymised.json")) as f:
 			usages = Usage(f.read())
 
 			self.assertEqual(usages.size(),477)
 
 	def test_usage_voice_has_correct_num_records(self):
-		with(open(sample_data_dir+"usage_full_original.json")) as f:
+		with(open(sample_data_dir+"usage_full_anonymised.json")) as f:
 			usages = Usage(f.read())
 
 			self.assertEqual(len(list(usages.voice())),55)
 
 	def test_usage_text_has_correct_num_records(self):
-		with(open(sample_data_dir+"usage_full_original.json")) as f:
+		with(open(sample_data_dir+"usage_full_anonymised.json")) as f:
 			usages = Usage(f.read())
 
 			self.assertEqual(len(list(usages.text())),73)
 
 	def test_usage_data_has_correct_num_records(self):
-		with(open(sample_data_dir+"usage_full_original.json")) as f:
+		with(open(sample_data_dir+"usage_full_anonymised.json")) as f:
 			usages = Usage(f.read())
 
 			self.assertEqual(len(list(usages.data())),349)
 
 	def test_usage_filter_usage__blank_shows_all_records(self):
-		with(open(sample_data_dir+"usage_full_original.json")) as f:
+		with(open(sample_data_dir+"usage_full_anonymised.json")) as f:
 			usages = Usage(f.read())
 
 			self.assertEqual(len(list(usages.filter_by_type())),477)
