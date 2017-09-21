@@ -7,7 +7,7 @@ import pprint
 
 class UsageRecord:
 
-    def __init__(self, record):
+	def __init__(self, record):
 		self.service_name = record["serviceName"]
 		self.service_code = record["serviceCode"]
 		self.event_date = datetime.strptime(record["eventDate"], "%d-%b-%Y %H:%M")
