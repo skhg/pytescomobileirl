@@ -111,11 +111,17 @@ class TestBalances(unittest.TestCase):
 
 			self.assertEqual(balances.remaining_total("data"),8591.7578125)
 
-	def test_remaining_total_for_958Mb_sample_matches_expected(self):
+	def test_remaining_total_for_958Mb_sample_returns_958(self):
 		with(open(sample_data_dir+"mobile_data_958_left.json")) as f:
 			balances = Balances(f.read())
 
 			self.assertEqual(balances.remaining_total("data"),958.076171875)
+
+	def test_remaining_total_for_empty_data_matches_expected(self):
+		with(open(sample_data_dir+"mobile_data_empty.json")) as f:
+			balances = Balances(f.read())
+
+			self.assertEqual(balances.remaining_total("data"),0)
 
 class TestServiceBalance(unittest.TestCase):
 
