@@ -2,10 +2,14 @@
 # -*- coding: utf-8 -*-
 
 import json
+from . import UsageRecord
 
 class Usage:
 
     def __init__(self, json_blob):
-        self.usages = []
-        self.oldest_record = ""
-        
+        original_records = json.loads(json_blob)["usageHistory"]
+
+        self.records = [UsageRecord(rec) for rec in original_records ]
+
+    def size(self):
+        return len(self.records)
