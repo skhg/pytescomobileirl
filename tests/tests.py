@@ -3,6 +3,7 @@ from unittest import TestCase
 import json
 import types
 from pytescomobileirl import *
+from datetime import datetime, timedelta
 
 sample_data_dir = "./tests/sampledata/"
 
@@ -146,6 +147,47 @@ class TestServiceBalance(unittest.TestCase):
 			aDataBalance = DataBalance(simple_data, adv_data)
 
 			self.assertEqual(aDataBalance.remaining_qty, 1023.87890625)
+
+	def test_days_remaining_matches_expected(self):
+		sampleData = """
+    	{
+  "mainBalance" : 14.420000076293945,
+  "bonusBalance" : 0.0,
+  "lastBillAmount" : 0.0,
+  "openBillAmount" : 0.0,
+  "webTextBalance" : {
+    "nationalSms" : 200,
+    "internationalSms" : 50,
+    "nationalSmsAllowance" : 200,
+    "internationalSmsAllowance" : 50
+  },
+  "addonBalance" : [ {
+    "balance" : 10000.0,
+    "expiryDate" : "EXPIRYDATE",
+    "serviceBundle" : {
+      "name" : "Awarded Voice Balance",
+      "paymentProfile" : null,
+      "serviceCode" : "AB2",
+      "recurring" : false,
+      "allowance" : 10000.0,
+      "type" : "voice",
+      "unit" : "Min",
+      "charge" : 0.0,
+      "status" : "ACTIVE",
+      "serviceParameters" : { }
+    },
+    "optin" : true,
+    "visible" : null
+  }]
+  }
+    	"""
+    	
+		futureDateTime = (datetime.now() + timedelta(days=20)).strftime("%d-%b-%Y %H:%M")
+
+		sampleData = sampleData.replace("EXPIRYDATE",futureDateTime)
+		balances = Balances(sampleData)
+
+		self.assertEqual(balances.services[0].days_remaining(),19)
 
 if __name__ == '__main__':
 	unittest.main()

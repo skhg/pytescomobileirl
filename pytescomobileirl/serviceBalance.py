@@ -15,7 +15,7 @@ class ServiceBalance:
 
     def days_remaining(self):
         now = datetime.now()
-        return int(round(((self.__balance_expires) - now).days))
+        return int(round(((self.balance_expires) - now).days))
 
 class GenericBalance(ServiceBalance):
 
