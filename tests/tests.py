@@ -1,6 +1,7 @@
 import unittest
 from unittest import TestCase
 import json
+import types
 from pytescomobileirl import *
 
 sample_data_dir = "./tests/sampledata/"
@@ -53,6 +54,50 @@ class TestBalances(unittest.TestCase):
 
 			self.assertEqual(len(list(balances.voice())), 1)
 
-    
+	def test_create_svc_maps_type_correctly(self):
+		with(open(sample_data_dir+"balances_lots_enabled.json")) as f:
+			balances = Balances(f.read())
+
+			self.assertTrue(isinstance(balances.services[0],VoiceBalance))
+			
+
+	def test_create_svc_mystery_type_creates_generic_type(self):
+		sampleDataWithUnknownType = """
+    	{
+  "mainBalance" : 14.420000076293945,
+  "bonusBalance" : 0.0,
+  "lastBillAmount" : 0.0,
+  "openBillAmount" : 0.0,
+  "webTextBalance" : {
+    "nationalSms" : 200,
+    "internationalSms" : 50,
+    "nationalSmsAllowance" : 200,
+    "internationalSmsAllowance" : 50
+  },
+  "addonBalance" : [ {
+    "balance" : 10000.0,
+    "expiryDate" : "15-Oct-2017 00:00",
+    "serviceBundle" : {
+      "name" : "Awarded Voice Balance",
+      "paymentProfile" : null,
+      "serviceCode" : "AB2",
+      "recurring" : false,
+      "allowance" : 10000.0,
+      "type" : "mystery",
+      "unit" : "Min",
+      "charge" : 0.0,
+      "status" : "ACTIVE",
+      "serviceParameters" : { }
+    },
+    "optin" : true,
+    "visible" : null
+  }]
+  }
+    	"""
+    	
+		balances = Balances(sampleDataWithUnknownType)
+
+		self.assertTrue(isinstance(balances.services[0],GenericBalance))
+
 if __name__ == '__main__':
 	unittest.main()
