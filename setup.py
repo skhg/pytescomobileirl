@@ -4,7 +4,7 @@
 from distutils.core import setup
 
 setup(name='pytescomobileirl',
-      version='0.1.2',
+      version='0.2.0',
       description='Unofficial Python Tesco Mobile (Ireland) API',
       long_description='See project page with usage examples at https://github.com/skhg/pytescomobileirl',
       keywords='tesco mobile phone balance status web ireland api',
