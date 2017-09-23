@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import json
+from datetime import datetime
 from . import ServiceBalance
 from .serviceBalance import DataBalance
 from .serviceBalance import VoiceBalance
@@ -47,9 +48,50 @@ class Balances:
     def voice(self):
         return self.active_balances("voice")
 
+    def __create_summary_balance(self, svc_type, unit, remaining_total, max_expiry):
+        formatted_expiry = max_expiry.strftime("%d-%b-%Y %H:%M")
+
+        dummyBalanceJson = """
+        {
+    "balance" : """+str(remaining_total)+""",
+    "expiryDate" : \""""+formatted_expiry+"""\",
+    "serviceBundle" : {
+      "name" : "Summary",
+      "paymentProfile" : null,
+      "serviceCode" : "Summary",
+      "recurring" : false,
+      "allowance" : """+ str(remaining_total) +""",
+      "type" : \"""" + svc_type + """\",
+      "unit" : \""""+ unit + """\",
+      "charge" : 0.0,
+      "status" : "ACTIVE",
+      "serviceParameters" : { }
+    },
+    "optin" : true,
+    "visible" : null
+  }"""
+
+        loadedJson = json.loads(dummyBalanceJson)
+
+        return self.__create_svc(loadedJson)
+
     def remaining_total(self, svc_type):
-        total = 0.0
-        for bal in self.active_balances(svc_type):
-            total += bal.remaining_qty
-        return total
+        
+        balances_available = list(self.active_balances(svc_type))
+
+        if(len(balances_available)) is 0:            
+            return self.__create_summary_balance(svc_type, "unit", 0.0, datetime.now())
+        elif(len(balances_available)) is 1:
+            return balances_available[0]
+        else:
+            total = 0.0
+            max_expiry = datetime.now()
+            unit = ""
+
+            for bal in self.active_balances(svc_type):
+                total += bal.remaining_qty
+                unit = bal.unit
+                max_expiry = max(max_expiry,bal.balance_expires)
+
+            return self.__create_summary_balance(svc_type, unit, total, max_expiry)
 

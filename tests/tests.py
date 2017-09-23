@@ -107,25 +107,25 @@ class TestBalances(unittest.TestCase):
 		with(open(sample_data_dir+"balances_lots_enabled.json")) as f:
 			balances = Balances(f.read())
 
-			self.assertEqual(balances.remaining_total("nonexistent"),0)
+			self.assertEqual(balances.remaining_total("nonexistent").remaining_qty,0)
 
 	def test_remaining_total_for_data_matches_expected(self):
 		with(open(sample_data_dir+"balances_lots_enabled.json")) as f:
 			balances = Balances(f.read())
 
-			self.assertEqual(balances.remaining_total("data"),8591.7578125)
+			self.assertEqual(balances.remaining_total("data").remaining_qty,8591.7578125)
 
 	def test_remaining_total_for_958Mb_sample_returns_958(self):
 		with(open(sample_data_dir+"mobile_data_958_left.json")) as f:
 			balances = Balances(f.read())
 
-			self.assertEqual(balances.remaining_total("data"),958.076171875)
+			self.assertEqual(balances.remaining_total("data").remaining_qty,958.076171875)
 
 	def test_remaining_total_for_empty_data_matches_expected(self):
 		with(open(sample_data_dir+"mobile_data_empty.json")) as f:
 			balances = Balances(f.read())
 
-			self.assertEqual(balances.remaining_total("data"),0)
+			self.assertEqual(balances.remaining_total("data").remaining_qty,0)
 
 
 
