@@ -9,6 +9,5 @@ install: #dependencies
   - pip install codecov
 # command to run tests
 script:
-  - python ./tests/tests.py
   - coverage run ./tests/tests.py
   - codecov
