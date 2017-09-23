@@ -200,7 +200,49 @@ class TestServiceBalance(unittest.TestCase):
 
 		self.assertEqual(balances.services[0].days_remaining(),19)
 
+	def test_summary_forvoice_returns_expected(self):
+		with(open(sample_data_dir+"balances_lots_enabled.json")) as f:
+			jsonFromFile = json.loads(f.read())
 
+			simple = jsonFromFile["addonBalance"][0]
+			adv = simple["serviceBundle"]
+
+			aVoiceBalance = VoiceBalance(simple, adv)
+
+			self.assertEqual(aVoiceBalance.summary(),"10,000 Min")
+
+	def test_summary_fortext_returns_expected(self):
+		with(open(sample_data_dir+"balances_lots_enabled.json")) as f:
+			jsonFromFile = json.loads(f.read())
+
+			simple = jsonFromFile["addonBalance"][1]
+			adv = simple["serviceBundle"]
+
+			aTextBalance = TextBalance(simple, adv)
+
+			self.assertEqual(aTextBalance.summary(),"5,000 Msg")
+
+	def test_summary_for_data_over1GB_returns_expected(self):
+		with(open(sample_data_dir+"mobile_data_1024_left.json")) as f:
+			jsonFromFile = json.loads(f.read())
+
+			simple = jsonFromFile["addonBalance"][8]
+			adv = simple["serviceBundle"]
+
+			aBalance = DataBalance(simple, adv)
+
+			self.assertEqual(aBalance.summary(),"1.00 Gb")
+
+	def test_summary_for_data_under1GB_returns_expected(self):
+		with(open(sample_data_dir+"mobile_data_958_left.json")) as f:
+			jsonFromFile = json.loads(f.read())
+
+			simple = jsonFromFile["addonBalance"][8]
+			adv = simple["serviceBundle"]
+
+			aBalance = DataBalance(simple, adv)
+
+			self.assertEqual(aBalance.summary(),"958 Mb")
 
 
 

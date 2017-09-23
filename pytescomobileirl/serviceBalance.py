@@ -20,6 +20,9 @@ class ServiceBalance:
         now = datetime.now()
         return int(round(((self.balance_expires) - now).days))
 
+    def summary(self):
+        return "{:,.0f}".format(self.remaining_qty) + " " + self.unit
+
 class GenericBalance(ServiceBalance):
 
     def __init__(self, basic_data, adv_data):
@@ -42,6 +45,12 @@ class DataBalance(ServiceBalance):
             return start_value * 1024
         else:
             return start_value
+
+    def summary(self):
+        if self.remaining_qty > 1000:
+            return "{:,.2f} Gb".format(self.remaining_qty/1024)
+        else:
+            return "{:,.0f} Mb".format(self.remaining_qty)
 
 class VoiceBalance(ServiceBalance):
 
