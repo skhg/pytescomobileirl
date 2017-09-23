@@ -115,7 +115,7 @@ class TestBalances(unittest.TestCase):
 
 			self.assertEqual(balances.remaining_total("data").remaining_qty,8591.7578125)
 
-	def test_remaining_total_for_958Mb_sample_returns_958(self):
+	def test_remaining_total_for_958MB_sample_returns_958(self):
 		with(open(sample_data_dir+"mobile_data_958_left.json")) as f:
 			balances = Balances(f.read())
 
@@ -231,7 +231,7 @@ class TestServiceBalance(unittest.TestCase):
 
 			aBalance = DataBalance(simple, adv)
 
-			self.assertEqual(aBalance.summary(),"1.00 Gb")
+			self.assertEqual(aBalance.summary(),"1.00 GB")
 
 	def test_summary_for_data_under1GB_returns_expected(self):
 		with(open(sample_data_dir+"mobile_data_958_left.json")) as f:
@@ -242,7 +242,7 @@ class TestServiceBalance(unittest.TestCase):
 
 			aBalance = DataBalance(simple, adv)
 
-			self.assertEqual(aBalance.summary(),"958 Mb")
+			self.assertEqual(aBalance.summary(),"958 MB")
 
 
 

@@ -30,7 +30,7 @@ pprint(vars(my_data))
 returns:
 ```python
 14.28
-939 Mb
+939 MB
 {'balance_expires': datetime.datetime(2017, 10, 15, 0, 0),
  'balance_type': u'data',
  'is_active': True,

@@ -48,9 +48,9 @@ class DataBalance(ServiceBalance):
 
     def summary(self):
         if self.remaining_qty > 1000:
-            return "{:,.2f} Gb".format(self.remaining_qty/1024)
+            return "{:,.2f} GB".format(self.remaining_qty/1024)
         else:
-            return "{:,.0f} Mb".format(self.remaining_qty)
+            return "{:,.0f} MB".format(self.remaining_qty)
 
 class VoiceBalance(ServiceBalance):
 
