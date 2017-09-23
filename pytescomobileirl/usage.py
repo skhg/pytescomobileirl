@@ -7,9 +7,15 @@ from . import UsageRecord
 class Usage:
 
     def __init__(self, json_blob):
-        original_records = json.loads(json_blob)["usageHistory"]
+        loaded_json = json.loads(json_blob)
+
+        if isinstance(loaded_json, basestring): #handle stringified json, needs 2 conversions
+            loaded_json = json.loads(loaded_json)
+
+        original_records = loaded_json["usageHistory"]
 
         self.records = [UsageRecord(rec) for rec in original_records ]
+        self.availableRecordsCount = loaded_json["length"]
 
     def size(self):
         return len(self.records)
