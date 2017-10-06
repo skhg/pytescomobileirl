@@ -5,14 +5,15 @@ import requests
 from . import Balances
 from . import Usage
 
+
 class TescoSession:
 
     def __init__(self):
         self.__base_url = "https://my.tescomobile.ie/tmi-selfcare-web/"
-        self.__login_url = self.__base_url+"j_spring_security_check"
-        self.__logout_url = self.__base_url+"j_spring_security_logout"
-        self.__balance_url = self.__base_url+"rest/customer/v2/balance"
-        self.__usage_url = self.__base_url+"rest/usage/1/"
+        self.__login_url = self.__base_url + "j_spring_security_check"
+        self.__logout_url = self.__base_url + "j_spring_security_logout"
+        self.__balance_url = self.__base_url + "rest/customer/v2/balance"
+        self.__usage_url = self.__base_url + "rest/usage/1/"
 
         self.__session = requests.session()
 
@@ -36,6 +37,6 @@ class TescoSession:
         return Balances(json_balances)
 
     def get_usage(self, limit=20):
-        json_usage_record = self.__session.get(self.__usage_url+str(limit)).content
+        json_usage_record = self.__session.get(self.__usage_url + str(limit)).content
 
         return Usage(json_usage_record)
