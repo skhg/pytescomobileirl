@@ -2,72 +2,70 @@
 # -*- coding: utf-8 -*-
 
 import unittest
-from unittest import TestCase
 import json
-import types
-from pytescomobileirl import *
+from pytescomobileirl import Balances, Usage, DataBalance, VoiceBalance, TextBalance, GenericBalance
 from datetime import datetime, timedelta
 
 sample_data_dir = "./tests/sampledata/"
 
+
 class TestBalances(unittest.TestCase):
 
-	def test_balances_init_loadsJson(self):
-		with(open(sample_data_dir+"mobile_data_empty.json")) as f:
-			balances = Balances(f.read())
+    def test_balances_init_loadsJson(self):
+        with(open(sample_data_dir + "mobile_data_empty.json")) as f:
+            Balances(f.read())
 
-	def test_balances_credit_remaining_matches_expected(self):
-		with(open(sample_data_dir+"mobile_data_empty.json")) as f:
-			balances = Balances(f.read())
+    def test_balances_credit_remaining_matches_expected(self):
+        with(open(sample_data_dir + "mobile_data_empty.json")) as f:
+            balances = Balances(f.read())
 
-			self.assertEqual(balances.credit_remaining, 4.42)
+            self.assertEqual(balances.credit_remaining, 4.42)
 
-	def test_balances_count_of_services_matches_expected(self):
-		with(open(sample_data_dir+"mobile_data_empty.json")) as f:
-			balances = Balances(f.read())
+    def test_balances_count_of_services_matches_expected(self):
+        with(open(sample_data_dir + "mobile_data_empty.json")) as f:
+            balances = Balances(f.read())
 
-			self.assertEqual(len(balances.services), 7)
+            self.assertEqual(len(balances.services), 7)
 
-	def test_balances_active_balances_none_returns_0(self):
-		with(open(sample_data_dir+"mobile_data_empty.json")) as f:
-			balances = Balances(f.read())
+    def test_balances_active_balances_none_returns_0(self):
+        with(open(sample_data_dir + "mobile_data_empty.json")) as f:
+            balances = Balances(f.read())
 
-			self.assertEqual(len(list(balances.active_balances())), 0)
+            self.assertEqual(len(list(balances.active_balances())), 0)
 
-	def test_balances_active_balances_2active_returns_2(self):
-		with(open(sample_data_dir+"mobile_data_1024_left.json")) as f:
-			balances = Balances(f.read())
+    def test_balances_active_balances_2active_returns_2(self):
+        with(open(sample_data_dir + "mobile_data_1024_left.json")) as f:
+            balances = Balances(f.read())
 
-			self.assertEqual(len(list(balances.active_balances())), 2)
+            self.assertEqual(len(list(balances.active_balances())), 2)
 
-	def test_data_gets_data_balances(self):
-		with(open(sample_data_dir+"balances_lots_enabled.json")) as f:
-			balances = Balances(f.read())
+    def test_data_gets_data_balances(self):
+        with(open(sample_data_dir + "balances_lots_enabled.json")) as f:
+            balances = Balances(f.read())
 
-			self.assertEqual(len(list(balances.data())), 6)
+            self.assertEqual(len(list(balances.data())), 6)
 
-	def test_data_gets_text_balances(self):
-		with(open(sample_data_dir+"balances_lots_enabled.json")) as f:
-			balances = Balances(f.read())
+    def test_data_gets_text_balances(self):
+        with(open(sample_data_dir + "balances_lots_enabled.json")) as f:
+            balances = Balances(f.read())
 
-			self.assertEqual(len(list(balances.text())), 1)
+            self.assertEqual(len(list(balances.text())), 1)
 
-	def test_data_gets_voice_balances(self):
-		with(open(sample_data_dir+"balances_lots_enabled.json")) as f:
-			balances = Balances(f.read())
+    def test_data_gets_voice_balances(self):
+        with(open(sample_data_dir + "balances_lots_enabled.json")) as f:
+            balances = Balances(f.read())
 
-			self.assertEqual(len(list(balances.voice())), 1)
+            self.assertEqual(len(list(balances.voice())), 1)
 
-	def test_create_svc_maps_type_correctly(self):
-		with(open(sample_data_dir+"balances_lots_enabled.json")) as f:
-			balances = Balances(f.read())
+    def test_create_svc_maps_type_correctly(self):
+        with(open(sample_data_dir + "balances_lots_enabled.json")) as f:
+            balances = Balances(f.read())
 
-			self.assertTrue(isinstance(balances.services[0],VoiceBalance))
-			
+            self.assertTrue(isinstance(balances.services[0], VoiceBalance))
 
-	def test_create_svc_mystery_type_creates_generic_type(self):
-		sampleDataWithUnknownType = """
-    	{
+    def test_create_svc_mystery_type_creates_generic_type(self):
+        sampleDataWithUnknownType = """
+        {
   "mainBalance" : 14.420000076293945,
   "bonusBalance" : 0.0,
   "lastBillAmount" : 0.0,
@@ -97,71 +95,64 @@ class TestBalances(unittest.TestCase):
     "visible" : null
   }]
   }
-    	"""
-    	
-		balances = Balances(sampleDataWithUnknownType)
+        """
 
-		self.assertTrue(isinstance(balances.services[0],GenericBalance))
+        balances = Balances(sampleDataWithUnknownType)
 
-	def test_remaining_total_for_missing_type_returns_0(self):
-		with(open(sample_data_dir+"balances_lots_enabled.json")) as f:
-			balances = Balances(f.read())
+        self.assertTrue(isinstance(balances.services[0], GenericBalance))
 
-			self.assertEqual(balances.remaining_total("nonexistent").remaining_qty,0)
+    def test_remaining_total_for_missing_type_returns_0(self):
+        with(open(sample_data_dir + "balances_lots_enabled.json")) as f:
+            balances = Balances(f.read())
 
-	def test_remaining_total_for_data_matches_expected(self):
-		with(open(sample_data_dir+"balances_lots_enabled.json")) as f:
-			balances = Balances(f.read())
+            self.assertEqual(balances.remaining_total("nonexistent").remaining_qty, 0)
 
-			self.assertEqual(balances.remaining_total("data").remaining_qty,8591.7578125)
+    def test_remaining_total_for_data_matches_expected(self):
+        with(open(sample_data_dir + "balances_lots_enabled.json")) as f:
+            balances = Balances(f.read())
 
-	def test_remaining_total_for_958MB_sample_returns_958(self):
-		with(open(sample_data_dir+"mobile_data_958_left.json")) as f:
-			balances = Balances(f.read())
+            self.assertEqual(balances.remaining_total("data").remaining_qty, 8591.7578125)
 
-			self.assertEqual(balances.remaining_total("data").remaining_qty,958.076171875)
+    def test_remaining_total_for_958MB_sample_returns_958(self):
+        with(open(sample_data_dir + "mobile_data_958_left.json")) as f:
+            balances = Balances(f.read())
 
-	def test_remaining_total_for_empty_data_matches_expected(self):
-		with(open(sample_data_dir+"mobile_data_empty.json")) as f:
-			balances = Balances(f.read())
+            self.assertEqual(balances.remaining_total("data").remaining_qty, 958.076171875)
 
-			self.assertEqual(balances.remaining_total("data").remaining_qty,0)
+    def test_remaining_total_for_empty_data_matches_expected(self):
+        with(open(sample_data_dir + "mobile_data_empty.json")) as f:
+            balances = Balances(f.read())
 
-
-
-
-
-
-
+            self.assertEqual(balances.remaining_total("data").remaining_qty, 0)
 
 
 class TestServiceBalance(unittest.TestCase):
 
-	def test_init_convertsKbToMByte(self):
-		with(open(sample_data_dir+"balances_lots_enabled.json")) as f:
-			jsonFromFile = json.loads(f.read())
+    def test_init_convertsKbToMByte(self):
+        with(open(sample_data_dir + "balances_lots_enabled.json")) as f:
+            jsonFromFile = json.loads(f.read())
 
-			simple_data = jsonFromFile["addonBalance"][2]
-			adv_data = simple_data["serviceBundle"]
+            simple_data = jsonFromFile["addonBalance"][2]
+            adv_data = simple_data["serviceBundle"]
 
-			aDataBalance = DataBalance(simple_data, adv_data)
+            aDataBalance = DataBalance(simple_data, adv_data)
 
-			self.assertEqual(aDataBalance.remaining_qty, 1024.0)
+            self.assertEqual(aDataBalance.remaining_qty, 1024.0)
 
-	def test_init_Mbyte_remains_as_Mbyte(self):
-		with(open(sample_data_dir+"balances_lots_enabled.json")) as f:
-			jsonFromFile = json.loads(f.read())
+    def test_init_Mbyte_remains_as_Mbyte(self):
+        with(open(sample_data_dir + "balances_lots_enabled.json")) as f:
+            jsonFromFile = json.loads(f.read())
 
-			simple_data = jsonFromFile["addonBalance"][8]
-			adv_data = simple_data["serviceBundle"]
+            simple_data = jsonFromFile["addonBalance"][8]
+            adv_data = simple_data["serviceBundle"]
 
-			aDataBalance = DataBalance(simple_data, adv_data)
+            aDataBalance = DataBalance(simple_data, adv_data)
 
-			self.assertEqual(aDataBalance.remaining_qty, 1023.87890625)
+            self.assertEqual(aDataBalance.remaining_qty, 1023.87890625)
 
-	def test_days_remaining_matches_expected(self):
-		sampleData = """
-    	{
+    def test_days_remaining_matches_expected(self):
+        sampleData = """
+        {
   "mainBalance" : 14.420000076293945,
   "bonusBalance" : 0.0,
   "lastBillAmount" : 0.0,
@@ -191,115 +182,96 @@ class TestServiceBalance(unittest.TestCase):
     "visible" : null
   }]
   }
-    	"""
-    	
-		futureDateTime = (datetime.now() + timedelta(days=20)).strftime("%d-%b-%Y %H:%M")
+        """
 
-		sampleData = sampleData.replace("EXPIRYDATE",futureDateTime)
-		balances = Balances(sampleData)
+        futureDateTime = (datetime.now() + timedelta(days=20)).strftime("%d-%b-%Y %H:%M")
 
-		self.assertEqual(balances.services[0].days_remaining(),19)
+        sampleData = sampleData.replace("EXPIRYDATE", futureDateTime)
+        balances = Balances(sampleData)
 
-	def test_summary_forvoice_returns_expected(self):
-		with(open(sample_data_dir+"balances_lots_enabled.json")) as f:
-			jsonFromFile = json.loads(f.read())
+        self.assertEqual(balances.services[0].days_remaining(), 19)
 
-			simple = jsonFromFile["addonBalance"][0]
-			adv = simple["serviceBundle"]
+    def test_summary_forvoice_returns_expected(self):
+        with(open(sample_data_dir + "balances_lots_enabled.json")) as f:
+            jsonFromFile = json.loads(f.read())
 
-			aVoiceBalance = VoiceBalance(simple, adv)
+            simple = jsonFromFile["addonBalance"][0]
+            adv = simple["serviceBundle"]
 
-			self.assertEqual(aVoiceBalance.summary(),"10,000 Min")
+            aVoiceBalance = VoiceBalance(simple, adv)
 
-	def test_summary_fortext_returns_expected(self):
-		with(open(sample_data_dir+"balances_lots_enabled.json")) as f:
-			jsonFromFile = json.loads(f.read())
+            self.assertEqual(aVoiceBalance.summary(), "10,000 Min")
 
-			simple = jsonFromFile["addonBalance"][1]
-			adv = simple["serviceBundle"]
+    def test_summary_fortext_returns_expected(self):
+        with(open(sample_data_dir + "balances_lots_enabled.json")) as f:
+            jsonFromFile = json.loads(f.read())
 
-			aTextBalance = TextBalance(simple, adv)
+            simple = jsonFromFile["addonBalance"][1]
+            adv = simple["serviceBundle"]
 
-			self.assertEqual(aTextBalance.summary(),"5,000 Msg")
+            aTextBalance = TextBalance(simple, adv)
 
-	def test_summary_for_data_over1GB_returns_expected(self):
-		with(open(sample_data_dir+"mobile_data_1024_left.json")) as f:
-			jsonFromFile = json.loads(f.read())
+            self.assertEqual(aTextBalance.summary(), "5,000 Msg")
 
-			simple = jsonFromFile["addonBalance"][8]
-			adv = simple["serviceBundle"]
+    def test_summary_for_data_over1GB_returns_expected(self):
+        with(open(sample_data_dir + "mobile_data_1024_left.json")) as f:
+            jsonFromFile = json.loads(f.read())
 
-			aBalance = DataBalance(simple, adv)
+            simple = jsonFromFile["addonBalance"][8]
+            adv = simple["serviceBundle"]
 
-			self.assertEqual(aBalance.summary(),"1.00 GB")
+            aBalance = DataBalance(simple, adv)
 
-	def test_summary_for_data_under1GB_returns_expected(self):
-		with(open(sample_data_dir+"mobile_data_958_left.json")) as f:
-			jsonFromFile = json.loads(f.read())
+            self.assertEqual(aBalance.summary(), "1.00 GB")
 
-			simple = jsonFromFile["addonBalance"][8]
-			adv = simple["serviceBundle"]
+    def test_summary_for_data_under1GB_returns_expected(self):
+        with(open(sample_data_dir + "mobile_data_958_left.json")) as f:
+            jsonFromFile = json.loads(f.read())
 
-			aBalance = DataBalance(simple, adv)
+            simple = jsonFromFile["addonBalance"][8]
+            adv = simple["serviceBundle"]
 
-			self.assertEqual(aBalance.summary(),"958 MB")
+            aBalance = DataBalance(simple, adv)
 
-
-
-
-
-
+            self.assertEqual(aBalance.summary(), "958 MB")
 
 
 class TestUsage(unittest.TestCase):
 
-	def test_usage_init_loadsJson(self):
-		with(open(sample_data_dir+"usage_full_anonymised.json")) as f:
-			usages = Usage(f.read())
+    def test_usage_init_loadsJson(self):
+        with(open(sample_data_dir + "usage_full_anonymised.json")) as f:
+            Usage(f.read())
 
-	def test_usage_size_has_all_records(self):
-		with(open(sample_data_dir+"usage_full_anonymised.json")) as f:
-			usages = Usage(f.read())
+    def test_usage_size_has_all_records(self):
+        with(open(sample_data_dir + "usage_full_anonymised.json")) as f:
+            usages = Usage(f.read())
 
-			self.assertEqual(usages.size(),477)
+            self.assertEqual(usages.size(), 477)
 
-	def test_usage_voice_has_correct_num_records(self):
-		with(open(sample_data_dir+"usage_full_anonymised.json")) as f:
-			usages = Usage(f.read())
+    def test_usage_voice_has_correct_num_records(self):
+        with(open(sample_data_dir + "usage_full_anonymised.json")) as f:
+            usages = Usage(f.read())
 
-			self.assertEqual(len(list(usages.voice())),55)
+            self.assertEqual(len(list(usages.voice())), 55)
 
-	def test_usage_text_has_correct_num_records(self):
-		with(open(sample_data_dir+"usage_full_anonymised.json")) as f:
-			usages = Usage(f.read())
+    def test_usage_text_has_correct_num_records(self):
+        with(open(sample_data_dir + "usage_full_anonymised.json")) as f:
+            usages = Usage(f.read())
 
-			self.assertEqual(len(list(usages.text())),73)
+            self.assertEqual(len(list(usages.text())), 73)
 
-	def test_usage_data_has_correct_num_records(self):
-		with(open(sample_data_dir+"usage_full_anonymised.json")) as f:
-			usages = Usage(f.read())
+    def test_usage_data_has_correct_num_records(self):
+        with(open(sample_data_dir + "usage_full_anonymised.json")) as f:
+            usages = Usage(f.read())
 
-			self.assertEqual(len(list(usages.data())),349)
+            self.assertEqual(len(list(usages.data())), 349)
 
-	def test_usage_filter_usage__blank_shows_all_records(self):
-		with(open(sample_data_dir+"usage_full_anonymised.json")) as f:
-			usages = Usage(f.read())
+    def test_usage_filter_usage__blank_shows_all_records(self):
+        with(open(sample_data_dir + "usage_full_anonymised.json")) as f:
+            usages = Usage(f.read())
 
-			self.assertEqual(len(list(usages.filter_by_type())),477)
-
-
-
+            self.assertEqual(len(list(usages.filter_by_type())), 477)
 
 
 if __name__ == '__main__':
-	unittest.main()
-
-
-
-
-
-
-
-
-
-
+    unittest.main()
