@@ -24,7 +24,7 @@ class ServiceBalance:
             now = datetime.now()
             return int(round(((self.balance_expires) - now).days))
         else:
-            return sys.maxint
+            return sys.maxsize
 
     def has_expiry(self):
         return self.balance_expires is not None

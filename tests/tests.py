@@ -320,7 +320,7 @@ class TestServiceBalance(unittest.TestCase):
 
         balances = Balances(sampleData)
 
-        self.assertEqual(balances.services[0].days_remaining(), sys.maxint)
+        self.assertEqual(balances.services[0].days_remaining(), sys.maxsize)
 
 
 class TestUsage(unittest.TestCase):
