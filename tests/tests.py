@@ -4,10 +4,14 @@
 import unittest
 import json
 import sys
+import os
 from pytescomobileirl import Balances, Usage, DataBalance, VoiceBalance, TextBalance, GenericBalance
 from datetime import datetime, timedelta
 
 sample_data_dir = "./sampledata/"
+
+if os.path.exists(sample_data_dir) is False:
+    sample_data_dir = "./tests/sampledata/"
 
 
 class TestBalances(unittest.TestCase):
