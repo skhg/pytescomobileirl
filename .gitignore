@@ -116,3 +116,5 @@ anonymise_fields.py
 .idea/pytescomobileirl.iml
 
 .idea/vcs.xml
+
+.idea/inspectionProfiles/Project_Default.xml

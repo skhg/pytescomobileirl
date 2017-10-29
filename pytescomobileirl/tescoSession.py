@@ -22,7 +22,7 @@ class TescoSession:
 
         try:
             login_result = self.__session.post(self.__login_url, data=login_details)
-        except:
+        except requests.exceptions.RequestException:
             return False
 
         return login_result.ok
