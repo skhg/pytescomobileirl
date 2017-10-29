@@ -3,10 +3,11 @@
 
 import unittest
 import json
+import sys
 from pytescomobileirl import Balances, Usage, DataBalance, VoiceBalance, TextBalance, GenericBalance
 from datetime import datetime, timedelta
 
-sample_data_dir = "./tests/sampledata/"
+sample_data_dir = "./sampledata/"
 
 
 class TestBalances(unittest.TestCase):
@@ -125,6 +126,12 @@ class TestBalances(unittest.TestCase):
 
             self.assertEqual(balances.remaining_total("data").remaining_qty, 0)
 
+    def test_remaining_total_withEUroaming_handlesNullExpiryDate(self):
+        with(open(sample_data_dir + "balances_with_EU_roaming_allowance.json")) as f:
+            balances = Balances(f.read())
+
+            self.assertEqual(balances.remaining_total("data").balance_expires, datetime(2017, 11, 14, 0, 0))
+
 
 class TestServiceBalance(unittest.TestCase):
 
@@ -234,6 +241,82 @@ class TestServiceBalance(unittest.TestCase):
             aBalance = DataBalance(simple, adv)
 
             self.assertEqual(aBalance.summary(), "958 MB")
+
+    def test_has_expiry_forEUroamingBalance_isFalse(self):
+        sampleData = """
+          {
+    "mainBalance" : 14.420000076293945,
+    "bonusBalance" : 0.0,
+    "lastBillAmount" : 0.0,
+    "openBillAmount" : 0.0,
+    "webTextBalance" : {
+      "nationalSms" : 200,
+      "internationalSms" : 50,
+      "nationalSmsAllowance" : 200,
+      "internationalSmsAllowance" : 50
+    },
+    "addonBalance" : [ {
+    "balance" : 89.953125,
+    "expiryDate" : null,
+    "serviceBundle" : {
+      "name" : "EU Roaming Data Allowance",
+      "paymentProfile" : null,
+      "serviceCode" : "RLAH",
+      "recurring" : true,
+      "allowance" : 1024.0,
+      "type" : "data",
+      "unit" : "Mbyte",
+      "charge" : 0.0,
+      "status" : "ACTIVE",
+      "serviceParameters" : { }
+    },
+    "optin" : true,
+    "visible" : null
+  }]
+    }
+          """
+
+        balances = Balances(sampleData)
+
+        self.assertFalse(balances.services[0].has_expiry())
+
+    def test_days_remaining_forEUroamingBalance_isMaxValue(self):
+        sampleData = """
+            {
+      "mainBalance" : 14.420000076293945,
+      "bonusBalance" : 0.0,
+      "lastBillAmount" : 0.0,
+      "openBillAmount" : 0.0,
+      "webTextBalance" : {
+        "nationalSms" : 200,
+        "internationalSms" : 50,
+        "nationalSmsAllowance" : 200,
+        "internationalSmsAllowance" : 50
+      },
+      "addonBalance" : [ {
+      "balance" : 89.953125,
+      "expiryDate" : null,
+      "serviceBundle" : {
+        "name" : "EU Roaming Data Allowance",
+        "paymentProfile" : null,
+        "serviceCode" : "RLAH",
+        "recurring" : true,
+        "allowance" : 1024.0,
+        "type" : "data",
+        "unit" : "Mbyte",
+        "charge" : 0.0,
+        "status" : "ACTIVE",
+        "serviceParameters" : { }
+      },
+      "optin" : true,
+      "visible" : null
+    }]
+      }
+            """
+
+        balances = Balances(sampleData)
+
+        self.assertEqual(balances.services[0].days_remaining(), sys.maxint)
 
 
 class TestUsage(unittest.TestCase):

@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import requests
+import logging
 from . import Balances
 from . import Usage
 
@@ -20,23 +21,31 @@ class TescoSession:
     def login(self, phone_num, password):
         login_details = {'j_username': phone_num, 'j_password': password}
 
+        logging.debug("Attempt to login")
+        logging.debug(login_details)
         try:
             login_result = self.__session.post(self.__login_url, data=login_details)
-        except requests.exceptions.RequestException:
+            logging.debug(login_result)
+        except requests.exceptions.RequestException as e:
+            logging.error(e)
             return False
 
         return login_result.ok
 
     def logout(self):
-        self.__session.get(self.__logout_url)
+        logout_result = self.__session.get(self.__logout_url)
+        logging.debug(logout_result)
+
         self.__session.close()
 
     def get_balances(self):
         json_balances = self.__session.get(self.__balance_url).content
+        logging.debug(json_balances)
 
         return Balances(json_balances)
 
     def get_usage(self, limit=20):
         json_usage_record = self.__session.get(self.__usage_url + str(limit)).content
+        logging.debug(json_usage_record)
 
         return Usage(json_usage_record)

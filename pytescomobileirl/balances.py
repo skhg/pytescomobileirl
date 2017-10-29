@@ -51,7 +51,7 @@ class Balances:
     def __create_summary_balance(self, svc_type, unit, remaining_total, max_expiry):
         formatted_expiry = max_expiry.strftime("%d-%b-%Y %H:%M")
 
-        dummyBalanceJson = """
+        dummy_balance_json = """
         {
     "balance" : """ + str(remaining_total) + """,
     "expiryDate" : \"""" + formatted_expiry + """\",
@@ -71,9 +71,9 @@ class Balances:
     "visible" : null
   }"""
 
-        loadedJson = json.loads(dummyBalanceJson)
+        loaded_json = json.loads(dummy_balance_json)
 
-        return self.__create_svc(loadedJson)
+        return self.__create_svc(loaded_json)
 
     def remaining_total(self, svc_type):
 
@@ -91,6 +91,7 @@ class Balances:
             for bal in self.active_balances(svc_type):
                 total += bal.remaining_qty
                 unit = bal.unit
-                max_expiry = max(max_expiry, bal.balance_expires)
+                if bal.balance_expires is not None:
+                    max_expiry = max(max_expiry, bal.balance_expires)
 
             return self.__create_summary_balance(svc_type, unit, total, max_expiry)

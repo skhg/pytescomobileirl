@@ -10,7 +10,9 @@ install:
   - pip install flake8
   - pip install radon
 script:
+  - cd tests
   - coverage run ./tests/tests.py
+  - cd ..
   - codecov
   - flake8 --ignore=E501  # ignore "line too long errors"
   - radon cc ./pytescomobileirl/ -a 

@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from datetime import datetime
+import sys
 
 
 class ServiceBalance:
@@ -11,6 +12,7 @@ class ServiceBalance:
         self.is_active = adv_data["status"] == "ACTIVE"
         self.serviceCode = adv_data["serviceCode"]
         self.remaining_qty = remaining_qty
+        self.name = adv_data["name"]
 
         if basic_data["expiryDate"] is not None:
             self.balance_expires = datetime.strptime(basic_data["expiryDate"], "%d-%b-%Y %H:%M")
@@ -18,8 +20,14 @@ class ServiceBalance:
             self.balance_expires = None
 
     def days_remaining(self):
-        now = datetime.now()
-        return int(round(((self.balance_expires) - now).days))
+        if self.has_expiry():
+            now = datetime.now()
+            return int(round(((self.balance_expires) - now).days))
+        else:
+            return sys.maxint
+
+    def has_expiry(self):
+        return self.balance_expires is not None
 
     def summary(self):
         return "{:,.0f}".format(self.remaining_qty) + " " + self.unit
