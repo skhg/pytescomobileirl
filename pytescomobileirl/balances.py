@@ -79,9 +79,9 @@ class Balances:
 
         balances_available = list(self.active_balances(svc_type))
 
-        if(len(balances_available)) is 0:
+        if(len(balances_available)) == 0:
             return self.__create_summary_balance(svc_type, "unit", 0.0, datetime.now())
-        elif(len(balances_available)) is 1:
+        elif(len(balances_available)) == 1:
             return balances_available[0]
         else:
             total = 0.0
