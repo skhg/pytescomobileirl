@@ -118,3 +118,4 @@ anonymise_fields.py
 .idea/vcs.xml
 
 .idea/inspectionProfiles/Project_Default.xml
+*.iml
