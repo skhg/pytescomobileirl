@@ -1,5 +1,5 @@
 # pytescomobileirl
-[![Build Status](https://travis-ci.org/skhg/pytescomobileirl.svg?branch=master)](https://travis-ci.org/skhg/pytescomobileirl) [![PyPI](https://img.shields.io/pypi/v/pytescomobileirl.svg)](https://pypi.python.org/pypi/pytescomobileirl/) [![Codecov](https://img.shields.io/codecov/c/github/skhg/pytescomobileirl.svg)](https://codecov.io/gh/skhg/pytescomobileirl)
+![](https://github.com/skhg/pytescomobileirl/workflows/.github/workflows/branch-builds.yml/badge.svg?branch=master)  [![PyPI](https://img.shields.io/pypi/v/pytescomobileirl.svg)](https://pypi.python.org/pypi/pytescomobileirl/) [![Codecov](https://img.shields.io/codecov/c/github/skhg/pytescomobileirl.svg)](https://codecov.io/gh/skhg/pytescomobileirl)
 
 A Python API for accessing your [Tesco Mobile Ireland](http://www.tescomobile.ie) account balance &amp; usage stats. This is an unoffical API and the author/contributors are in no way connected to Tesco or Tesco Mobile. The API provides methods to:
 * Get your current balances (€ credit and voice/text/data packages)
